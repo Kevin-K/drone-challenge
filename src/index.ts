@@ -1,2 +1,3 @@
-// Tempory index.ts (program main), as it is not built yet.
-console.log("TODO: this application is a work in progress");
+import { parseTime } from "./util/parseTime";
+
+console.log(parseTime("00:00:00"));
