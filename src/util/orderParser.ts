@@ -1,5 +1,6 @@
-import moment from 'moment';
+
 import {isString} from 'lodash';
+import { parseTime } from './parseTime';
 
 export type Coordinates = {
     north:number,
@@ -14,7 +15,6 @@ export interface Order {
     orderTime: Date
 }
 
-export type TimeParser = (x: string) => Date;
 export type CoordinateParser  = (x: string) => Coordinates;
 export type OrderParser  = (x: string) => Order;
 
@@ -22,14 +22,14 @@ export const COORD_REGEXP = /^(N|S)([0-9]*)(E|W)([0-9]*)/;
 
 export const parseCoordinates: CoordinateParser = (coordStr: string) => {
     if (!isString(coordStr)) {
-        throw new Error("Invalid coordinate format");
+        throw new Error("Invalid coordinate format.");
     }
 
     // run the regular expression against the coordinate string
     // force to uppercase for error handling of lower cases.
     const match = COORD_REGEXP.exec(coordStr.toUpperCase());
     if (match == null) {
-        throw new Error("Invalid coordinate format");
+        throw new Error("Invalid coordinate format.");
     }
     const [
         _fullMatch, 
@@ -73,9 +73,6 @@ export const parseCoordinates: CoordinateParser = (coordStr: string) => {
     return coordinates;
 };
 
-export const parseTime: TimeParser = (timeStr) => {
-    return moment(timeStr.toUpperCase(), "HH:MM:SS").toDate();
-}
 export const parseOrder: OrderParser = (orderStr) => {
     if (!isString(orderStr)) {
         throw new Error("Invalid order format.");
