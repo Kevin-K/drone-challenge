@@ -1,5 +1,6 @@
 import { isString } from "lodash";
 import { parseTime } from "./parseTime";
+import { parseCoordinates, Coordinates } from "./parseCoordinates";
 
 export interface Order {
   orderId: string;
@@ -7,12 +8,12 @@ export interface Order {
   orderTime: Date;
 }
 
-export type CoordinateParser = (x: string) => Coordinates;
 export type OrderParser = (x: string) => Order;
+export const ERR_INVAL_ORDER = "Order does not match specified format.";
 
 export const parseOrder: OrderParser = orderStr => {
   if (!isString(orderStr)) {
-    throw new Error("Invalid order format.");
+    throw new Error(ERR_INVAL_ORDER);
   }
   const [orderIdStr, coordStr, timeStr] = orderStr
     // 1. trim out any leading or trailing spaces
