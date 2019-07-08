@@ -1,5 +1,7 @@
 import { Heap } from "heap-js";
 import { Task, TaskResult } from "../Task/BaseTask";
+export const ERR_BASESCHEDULER_NO_SORT =
+  "BaseScheduler prioritySort is abstract. Please extend";
 
 export interface Scheduler {
   runningTask?: Task;
@@ -14,18 +16,10 @@ export class BaseScheduler implements Scheduler {
   queuedTasks: Heap<Task>;
 
   constructor() {
-    this.queuedTasks = new Heap<Task>();
+    this.queuedTasks = new Heap<Task>(this.prioritySort);
   }
 
   prioritySort(a: Task, b: Task): number {
-    throw new Error("BaseScheduler prioritySort is abstract. Please extend");
-  }
-
-  getTasks() {
-    return this.queuedTasks;
-  }
-
-  peekNextTask() {
-    return this.queuedTasks.peek();
+    throw new Error(ERR_BASESCHEDULER_NO_SORT);
   }
 }

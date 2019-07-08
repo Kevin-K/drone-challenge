@@ -2,6 +2,7 @@ import { Order } from "./util";
 import { Heap } from "heap-js";
 export class OrderSimulator {
   orders: Heap<Order>;
+
   static orderPriority = (a: Order, b: Order) => {
     if (a) {
       if (b) {
@@ -15,6 +16,7 @@ export class OrderSimulator {
       return 0;
     }
   };
+
   constructor(orders: Order[] = []) {
     this.orders = new Heap<Order>(OrderSimulator.orderPriority);
     this.orders.init(orders);
@@ -36,5 +38,9 @@ export class OrderSimulator {
       }
     }
     return orders;
+  }
+
+  peek(): Order | undefined {
+    return this.orders.peek();
   }
 }

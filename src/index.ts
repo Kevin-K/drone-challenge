@@ -59,7 +59,7 @@ while (true) {
   // If no ready orders and the schedule is empty, fast forward to next order
   if (!readyOrders.length && scheduler.queuedTasks.isEmpty()) {
     // O(1) get max of the orders (doesn't remove)
-    const nextOrder = orderSim.orders.peek();
+    const nextOrder = orderSim.peek();
     if (nextOrder) {
       refTime = nextOrder.orderTime;
       continue;
