@@ -89,3 +89,4 @@ typings/
 
 #tsc build
 lib/
+results_*.*

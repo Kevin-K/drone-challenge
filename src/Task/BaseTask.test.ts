@@ -47,7 +47,8 @@ describe("BaseTask", () => {
         startTime: initTime,
         endTime: new Date(initTime.getTime() + 2 * 1000),
         score: 1,
-        task: baseTask
+        task: baseTask,
+        delivered: true
       });
     });
   });
@@ -67,19 +68,62 @@ describe("BaseTask", () => {
     });
   });
 
-  describe("getSecsToNeutralDeadline", () => {
-    it("returns time to deadline in seconds", () => {
-      expect(baseTask.getSecsToNeutralDeadline(initTime)).toEqual(
-        baseTask.neutralDeadlineSecs
-      );
+  describe("Compute logic", () => {
+    beforeEach(() => {
+      baseTask.getComputeTimeSecs = () => 2;
+    });
 
-      // curr time = init + 2 seconds
-      const currTime = new Date(initTime.getTime() + 2 * 1000);
-      expect(baseTask.getSecsToNeutralDeadline(currTime)).toEqual(
-        baseTask.neutralDeadlineSecs - 2
-      );
+    describe("getPositiveDeadlineSlack", () => {
+      it("returns the number of seconds must start to meet positive deadline", () => {
+        expect(baseTask.getPositiveDeadlineSlack(initTime)).toEqual(
+          baseTask.positiveDeadlineSecs - 2
+        );
+      });
+    });
+
+    describe("getCompleteTime", () => {
+      it("returns the date object for when the task would finish", () => {
+        expect(baseTask.getCompleteTime(initTime).getTime()).toEqual(
+          initTime.getTime() + 2000
+        );
+      });
+    });
+
+    describe("getNeutralDeadlineSlack", () => {
+      it("returns the number of seconds must start to meet neutral deadline", () => {
+        expect(baseTask.getNeutralDeadlineSlack(initTime)).toEqual(
+          baseTask.neutralDeadlineSecs - 2
+        );
+      });
+    });
+    describe("canReachPositiveDeadline", () => {
+      it("returns true if time at complete is LTE deadline", () => {
+        expect(baseTask.canReachPositiveDeadline(initTime)).toEqual(true);
+      });
+
+      it("returns true if time at complete is GT deadline", () => {
+        const tooLate =
+          initTime.getTime() + baseTask.positiveDeadlineSecs * 1000;
+        expect(baseTask.canReachPositiveDeadline(new Date(tooLate))).toEqual(
+          false
+        );
+      });
+    });
+    describe("canReachNeutralDeadline", () => {
+      it("returns true if time at complete is LTE deadline", () => {
+        expect(baseTask.canReachNeutralDeadline(initTime)).toEqual(true);
+      });
+
+      it("returns true if time at complete is GT deadline", () => {
+        const tooLate =
+          initTime.getTime() + baseTask.neutralDeadlineSecs * 1000;
+        expect(baseTask.canReachNeutralDeadline(new Date(tooLate))).toEqual(
+          false
+        );
+      });
     });
   });
+
   describe("getScore", () => {
     it("gets a 1 score if endTime <= positiveDeadline", () => {
       expect(baseTask.getScore(initTime)).toEqual(1);

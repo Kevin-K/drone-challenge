@@ -18,22 +18,8 @@ export interface Task {
   getSecsToNeutralDeadline(refTime: Date): number;
   canReachPositiveDeadline(refTime: Date): boolean;
   canReachNeutralDeadline(refTime: Date): boolean;
-
   getScore(endTime: Date): -1 | 0 | 1;
 }
-export const heapBaseSort = (a: any, b: any) => {
-  if (!a) {
-    if (!b) {
-      return 0;
-    }
-    return 1;
-  } else if (!b) {
-    return -1;
-  } else {
-    return 0;
-  }
-};
-
 export interface TaskResult {
   task: Task;
   delivered: boolean;
@@ -107,7 +93,7 @@ export class BaseTask implements Task {
   }
 
   canReachNeutralDeadline(refTime: Date) {
-    return Boolean(this.getNeutralDeadlineSlack(refTime));
+    return this.getNeutralDeadlineSlack(refTime) >= 0;
   }
 
   getSecsToNeutralDeadline(refTime: Date) {

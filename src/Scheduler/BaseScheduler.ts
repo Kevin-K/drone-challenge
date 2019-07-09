@@ -48,11 +48,16 @@ export class BaseScheduler implements Scheduler {
     return this.queuedTasks.pop();
   }
 
+  /**
+   * Scheduler event operation
+   * O(log n)
+   */
   runNextTask(refTime: Date) {
     // restrict operation to after min time
+    // O(1)
     if (refTime.getTime() < this.minTime.getTime()) {
       console.log(`Can't operate before ${formatTime(this.minTime)}.`);
-      return this.refTime;
+      return refTime;
     }
 
     // Popping a task off the heap resorts the heap
@@ -60,7 +65,7 @@ export class BaseScheduler implements Scheduler {
     const task = this.getNextTask();
     if (!task) {
       console.log(`No task found`);
-      return this.refTime;
+      return refTime;
     }
 
     const taskCompleteAt = task.getCompleteTime(refTime);
@@ -74,12 +79,9 @@ export class BaseScheduler implements Scheduler {
       });
       return refTime;
     } else {
-      // Running the task is has no complexity, just moves
-      // the simulation time.
       // O(1)
       const result = task.run(refTime);
 
-      // Array push
       // O(1)
       this.finishedTasks.push(result);
 
@@ -94,5 +96,25 @@ export class BaseScheduler implements Scheduler {
     const promoters = scores.filter(score => score === 1).length;
     const denoters = scores.filter(score => score === -1).length;
     return promoters / total - denoters / total || 0;
+  }
+
+  getTotalComputeTime() {
+    return (
+      this.finishedTasks
+        .filter(ft => ft.delivered)
+        .map(ft => {
+          const end = ft.endTime ? ft.endTime.getTime() : 0;
+          const start = ft.startTime ? ft.startTime.getTime() : 0;
+          return end - start;
+        })
+        .reduce((prev, current) => prev + current) || 0
+    );
+  }
+
+  getUtilization() {
+    return (
+      this.getTotalComputeTime() /
+      (this.maxTime.getTime() - this.minTime.getTime())
+    );
   }
 }
