@@ -1,4 +1,5 @@
-# Drone Delivery Challenge
+# Drone Delivery Challenge 
+[![Build Status](https://travis-ci.com/Kevin-K/drone-challenge.svg?branch=master)](https://travis-ci.com/Kevin-K/drone-challenge)
 
 An implementation of the Walmart Labs Drone Delivery Challenge assignment.
 
