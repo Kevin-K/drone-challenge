@@ -51,8 +51,8 @@ To produce this scheduling simulation, 2 data stores are used.
      | ------------------ | --------------- | --- | --- | --- |
      | Insert One         | O(log n)        |     |     |     |
      | Remove Max         | O(log n)        |     |     |     |
-     | Populate from file | O(n)            |     |     |     |
-     |                    |                 |     |     |     |
+     | Populate from file | O(n log n)      |     |     |     |
+     
 
 2. [EDFScheduler](src/Scheduler/EDFScheduler.ts)
 
@@ -62,8 +62,8 @@ To produce this scheduling simulation, 2 data stores are used.
    | ------------------------ | --------------- | --- | --- | --- |
    | Insert One               | O(log n)        |     |     |     |
    | Remove Max               | O(log n)        |     |     |     |
-   | Populate from all orders | O(n)            |     |     |     |
-   |                          |                 |     |     |     |
+   | Populate from all orders | O(n log n)      |     |     |     |
+   
 
 ### Event loop
 
@@ -171,3 +171,7 @@ _Compare 2 delivery tasks A and B, the higher priority is delivered sooner_
 
     4. The task with the alphabetically lower  order ID wins
         a. again deterministic, IDs shall be unique and not reused.
+        
+        
+### Technology
+Built using NodeJS and Typescript.
