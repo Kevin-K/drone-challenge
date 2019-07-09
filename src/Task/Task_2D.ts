@@ -7,12 +7,7 @@ export class Task_2D extends BaseTask {
   yCompLen: number;
   yCompSecPerLen: number = 60;
 
-  constructor(
-    initTime: Date,
-    id: string | number,
-    xCompLen: number,
-    yCompLen: number
-  ) {
+  constructor(initTime: Date, id: string, xCompLen: number, yCompLen: number) {
     super(initTime, id);
     this.xCompLen = xCompLen;
     this.yCompLen = yCompLen;

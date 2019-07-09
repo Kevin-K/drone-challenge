@@ -1,8 +1,10 @@
 import * as fs from "fs";
 import { parseOrder, printHelp, parseTime, inputFileToArray } from "./util";
-import { ELLFScheduler } from "./Scheduler/ELLFScheduler";
+import { LLFScheduler } from "./Scheduler/LLFScheduler";
 import { DeliveryTask } from "./Task/DeliveryTask";
 import { OrderSimulator } from "./OrderSimulator";
+import { EDFScheduler } from "./Scheduler/EDFScheduler";
+import { resultsToFile } from "./util/resultsToFile";
 
 const SIMULATION_START_DATE: Date = parseTime("06:00:00");
 const SIMULATION_END_DATE: Date = parseTime("22:00:00");
@@ -34,9 +36,13 @@ let refTime = SIMULATION_START_DATE;
 // OrderSimulator contains a MaxHeap of orders, sorted by orderTime
 const orderSim = new OrderSimulator(orders);
 
-// ELLFScheduler contains a MaxHeap of scheduledTasks, sorted by laxity
+// LLFScheduler contains a MaxHeap of scheduledTasks, sorted by laxity
 // also contains an array of finished tasks, sorted by completion time
-const scheduler = new ELLFScheduler(refTime);
+const scheduler = new EDFScheduler(
+  refTime,
+  SIMULATION_START_DATE,
+  SIMULATION_END_DATE
+);
 
 /**
  * There are 2 heaps of data to process:
@@ -88,3 +94,8 @@ while (true) {
   }
 }
 console.log(`Final Score: ${scheduler.getFinalScore()}`);
+resultsToFile(
+  Math.floor(scheduler.getFinalScore() * 100),
+  scheduler.finishedTasks,
+  "results.txt"
+);

@@ -1,6 +1,5 @@
 import moment from "moment";
-import { isString } from "lodash";
-import { isObject } from "util";
+import { isObject, isString } from "util";
 
 /**
  * Optional settings to apply to the TimeParser implementation.

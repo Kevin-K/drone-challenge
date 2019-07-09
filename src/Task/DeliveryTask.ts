@@ -8,6 +8,10 @@ export class DeliveryTask extends Task_2D {
     const { north, south, east, west } = order.deliveryCoords;
     const latMag = Math.abs(north - south);
     const lonMag = Math.abs(east - west);
+
+    // bug in coverage for super
+    // https://github.com/gotwarlost/istanbul/issues/690
+    /* istanbul ignore next */
     super(order.orderTime, order.orderId, latMag, lonMag);
     this.order = order;
   }
