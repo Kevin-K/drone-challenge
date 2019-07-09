@@ -1,4 +1,4 @@
-import { isString } from "lodash";
+import { isString } from "util";
 import { parseTime } from "./parseTime";
 import { parseCoordinates, Coordinates } from "./parseCoordinates";
 
